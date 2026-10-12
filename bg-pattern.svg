@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- cupcake -->
+  <g stroke="#f4bcd6" transform="translate(22 22)">
+    <path d="M6 26 h38 l-5 22 h-28 z"/>
+    <path d="M9 26 c-6-3 -4-12 3-13 c2-8 15-9 18-2 c7 0 10 9 4 13 c-2 2-4 2-6 2"/>
+    <circle cx="26" cy="5" r="3"/>
+    <path d="M14 30 l3 14 M22 30 v14 M30 30 l-2 14"/>
+  </g>
+  <!-- cake slice -->
+  <g stroke="#bcd0f5" transform="translate(132 18)">
+    <path d="M4 34 L56 24 V50 H4 Z"/>
+    <path d="M4 34 L30 14 L56 24"/>
+    <path d="M4 42 L56 37"/>
+    <circle cx="30" cy="8" r="3"/>
+  </g>
+  <!-- mini round cake -->
+  <g stroke="#d6c6f3" transform="translate(20 128)">
+    <ellipse cx="28" cy="14" rx="24" ry="7"/>
+    <path d="M4 14 v24 c0 4 48 4 48 0 v-24"/>
+    <path d="M10 26 q4 5 8 0 q4 5 8 0 q4 5 8 0 q4 5 8 0 q4 5 6 0"/>
+    <path d="M28 7 v-6 M26 1 h4"/>
+  </g>
+  <!-- whisk -->
+  <g stroke="#bcd0f5" transform="translate(150 130)">
+    <path d="M30 4 v14"/>
+    <path d="M30 18 c-16 6 -16 30 0 40 c16 -10 16 -34 0 -40 z"/>
+    <path d="M30 18 c-6 8 -6 30 0 40 M30 18 c6 8 6 30 0 40"/>
+  </g>
+  <!-- sparkles and hearts -->
+  <g stroke="#f4bcd6">
+    <path d="M110 90 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3 z"/>
+    <path d="M214 98 c-5 -6 -13 0 -7 7 l7 6 7 -6 c6 -7 -2 -13 -7 -7 z"/>
+  </g>
+  <g stroke="#d6c6f3">
+    <path d="M96 200 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2 z"/>
+    <circle cx="205" cy="215" r="3"/>
+    <circle cx="100" cy="40" r="2"/>
+  </g>
+</svg>
