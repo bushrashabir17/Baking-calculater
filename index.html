@@ -6,13 +6,96 @@
 <title>Baking Quantity Calculator: Cakes, Cupcakes, Cookies, Brownies, Pizza</title>
 <meta name="description" content="Free baking calculators for cakes, cupcakes, cookies, brownies, pizza and puff pastry. Choose 1 to 5 lb and a flavor for exact grams, cups, pan size and baking time.">
 <link rel="canonical" href="https://YOURDOMAIN.com/">
-<link rel="stylesheet" href="style.css">
+<style>
+:root { --brand:#c2185b; --brand-dark:#a01249; --bg:#fff8f3; --card:#ffffff; --text:#2b2b2b; --muted:#6b6b6b; --line:#f0dccf; }
+* { box-sizing:border-box; }
+body { margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+header { background:var(--brand); color:#fff; padding:18px 16px; text-align:center; }
+header h1 { margin:0; font-size:1.4rem; }
+header p { margin:4px 0 0; font-size:.95rem; opacity:.95; }
+nav { background:#fff; border-bottom:1px solid var(--line); padding:8px; font-size:.9rem; display:flex; flex-wrap:wrap; justify-content:center; gap:2px 12px; }
+nav a { color:var(--brand); text-decoration:none; padding:3px 0; }
+main { max-width:720px; margin:0 auto; padding:16px; }
+.card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; margin-bottom:16px; }
+label { display:block; font-weight:600; margin:12px 0 4px; }
+select, input[type=number] { width:100%; padding:12px; font-size:1rem; border:1px solid #ccc; border-radius:8px; background:#fff; color:var(--text); }
+button { width:100%; margin-top:16px; padding:14px; font-size:1.05rem; font-weight:700; color:#fff; background:var(--brand); border:0; border-radius:8px; cursor:pointer; }
+button:active { background:var(--brand-dark); }
+table { width:100%; border-collapse:collapse; margin-top:8px; }
+th, td { text-align:left; padding:10px 6px; border-bottom:1px solid var(--line); font-size:.97rem; vertical-align:top; }
+th { color:var(--muted); font-weight:600; font-size:.85rem; text-transform:uppercase; }
+.pct { display:block; color:var(--muted); font-size:.78rem; }
+.summary, .facts li { background:#fff0f5; border-radius:8px; padding:8px 12px; }
+.facts { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 8px; padding:0; list-style:none; }
+.facts li { margin:0; font-size:.92rem; }
+.ad { min-height:90px; margin:16px 0; text-align:center; color:#bbb; font-size:.8rem; }
+h2 { font-size:1.15rem; margin:0 0 8px; }
+h3 { font-size:1rem; margin:16px 0 4px; }
+ol, ul { padding-left:22px; }
+li { margin-bottom:8px; }
+.btn { display:inline-block; background:var(--brand); color:#fff; text-decoration:none; padding:12px 18px; border-radius:8px; font-weight:700; }
+.grid { display:grid; gap:12px; }
+.grid.two { grid-template-columns:1fr 1fr; }
+.grid a.recipe, .grid a.cat { display:block; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; text-decoration:none; color:var(--text); }
+.grid a.cat { text-align:center; padding:14px 8px; }
+.grid a.cat svg { width:44px; height:44px; margin-bottom:4px; }
+.grid a.recipe strong, .grid a.cat strong { color:var(--brand); display:block; font-size:1.02rem; }
+.grid a.recipe span, .grid a.cat span { color:var(--muted); font-size:.88rem; }
+details { border-bottom:1px solid var(--line); padding:8px 0; }
+summary { cursor:pointer; font-weight:600; }
+footer { text-align:center; color:var(--muted); font-size:.85rem; padding:20px 16px 32px; }
+footer a { color:var(--muted); margin:0 6px; }
+.note { color:var(--muted); font-size:.88rem; }
+a { color:var(--brand); }
+@media (max-width:380px) { .grid.two { grid-template-columns:1fr; } }
+
+header { background:linear-gradient(135deg,#c2185b 0%,#e0407f 100%); }
+.calc.card { padding:18px 16px 20px; box-shadow:0 4px 18px rgba(194,24,91,.10); }
+.step { margin-bottom:22px; }
+.step h2 { display:flex; align-items:center; gap:10px; font-size:1.05rem; margin:0 0 12px; }
+.n { display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; background:var(--brand); color:#fff; font-size:.85rem; font-weight:700; flex:none; }
+.calc button { margin:0; width:auto; }
+.tiles { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.tiles.two { grid-template-columns:repeat(2,1fr); }
+.calc button.tile { display:flex; flex-direction:column; align-items:center; gap:1px; padding:12px 4px 10px; background:#fff; color:var(--text); border:2px solid var(--line); border-radius:14px; font-weight:700; font-size:.92rem; }
+.tile .em { font-size:2rem; line-height:1.15; }
+.tile small { color:var(--muted); font-weight:400; font-size:.72rem; }
+.calc button.tile.on { border-color:var(--brand); background:#fff0f5; box-shadow:0 3px 10px rgba(194,24,91,.2); }
+.chips { display:flex; flex-wrap:wrap; gap:8px; }
+.calc button.chip { display:inline-flex; align-items:center; gap:8px; padding:9px 14px; border-radius:999px; border:2px solid var(--line); background:#fff; color:var(--text); font-weight:600; font-size:.92rem; }
+.chip i { width:14px; height:14px; border-radius:50%; border:1px solid rgba(0,0,0,.18); display:inline-block; }
+.calc button.chip.on { background:var(--brand); border-color:var(--brand); color:#fff; }
+.pills { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; }
+.calc button.pill { display:flex; flex-direction:column; align-items:center; padding:10px 2px 8px; border-radius:12px; border:2px solid var(--line); background:#fff; color:var(--text); font-size:.95rem; }
+.pill small { font-weight:500; font-size:.72rem; color:var(--muted); }
+.calc button.pill.on { background:var(--brand); border-color:var(--brand); color:#fff; }
+.pill.on small { color:#ffe3ee; }
+.hint { font-size:.8rem; color:var(--muted); margin:8px 0 0; }
+.calc #go { width:100%; margin-top:4px; padding:15px; font-size:1.05rem; border-radius:12px; box-shadow:0 4px 12px rgba(194,24,91,.25); }
+.result .rhead { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+.dot { width:40px; height:40px; border-radius:50%; border:2px solid rgba(0,0,0,.08); flex:none; }
+.rhead h2 { margin:0; font-size:1.15rem; }
+.rhead p { margin:0; color:var(--muted); font-size:.9rem; }
+.stats { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:4px; }
+.st { background:linear-gradient(135deg,#fff0f5,#fff8f3); border:1px solid var(--line); border-radius:12px; padding:10px 12px; }
+.st small { display:block; color:var(--muted); font-size:.68rem; text-transform:uppercase; letter-spacing:.5px; }
+.st b { font-size:.95rem; color:var(--brand-dark); }
+.gt { display:inline-block; margin:18px 0 4px; padding:4px 12px; border-radius:999px; background:var(--brand); color:#fff; font-size:.8rem; font-weight:700; }
+.row { display:flex; justify-content:space-between; gap:12px; padding:10px 2px; border-bottom:1px dashed var(--line); }
+.row .nm { flex:1; }
+.row .am { text-align:right; min-width:100px; }
+.am b { display:block; font-size:1.05rem; }
+.am small { color:var(--muted); font-size:.8rem; }
+.actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:18px; }
+.calc ~ #out .ghost, .ghost { display:block; text-align:center; padding:12px 6px; border-radius:10px; border:2px solid var(--brand); background:#fff; color:var(--brand); font-weight:700; font-size:.92rem; text-decoration:none; cursor:pointer; margin:0; width:auto; }
+.more summary { font-size:1.05rem; color:var(--brand-dark); }
+</style>
 <!-- ADSENSE: paste your AdSense verification script here, inside <head> -->
 </head>
 <body>
 <header>
   <h1>Baking Quantity Calculator</h1>
-  <p>Exact ingredients for cakes, cupcakes, cookies, brownies and more</p>
+  <p>How much flour, sugar, butter & eggs do you need?</p>
 </header>
 <nav>
   <a href="index.html">Home</a>
@@ -24,24 +107,28 @@
   <a href="recipes.html">Recipes</a>
 </nav>
 <main>
+<div id="app"></div>
+<noscript><div class="card"><p>Please turn on JavaScript to use the calculator.</p></div></noscript>
+<div class="ad"><!-- ADSENSE: paste ad unit code here --></div>
+<div class="card"><details class="more"><summary><strong>How this calculator works</strong></summary>
+  <p>Choose what you are baking, a size from 1 lb to 5 lb and a flavor, and the answer appears right below. You get exact amounts in grams and cups, the pan or tray size, servings and oven time. A "1 lb cake" is the size most bakeries sell: about 6 inches across, serving 6 to 8 people.</p>
+  <p>Every recipe here is written in baker's percentages. That means each ingredient is shown as a percentage of the flour weight, so the balance of flour, fat, sugar, eggs and liquid stays the same at every size. This is how professional bakers scale recipes.</p>
+  <ul>
+    <li><strong>Cakes:</strong> 10 flavors, from vanilla and chocolate to red velvet, mango and black forest</li>
+    <li><strong>Cupcakes:</strong> 6 flavors with frosting amounts</li>
+    <li><strong>Cookies:</strong> 5 popular types</li>
+    <li><strong>Brownies:</strong> 5 flavors with pan size</li>
+    <li><strong>Pizza:</strong> 5 types, and <strong>puff pastry:</strong> 6 types</li>
+  </ul>
+  <p class="note">Amounts are approximate and ovens differ. Do a test bake before a big order.</p>
+</details></div>
 <div class="card">
-  <h2>How much do I need to bake?</h2>
-  <p>Pick what you are baking, choose a size from 1 lb to 5 lb and a flavor. You get exact ingredients in grams and cups, pan or tray sizes, servings and oven times. It is made for beginners, and professionals can use it to scale orders.</p>
+  <h2>Browse by category</h2>
   <div class="grid two"><a class="cat" href="cake-calculator.html"><svg viewBox="0 0 64 64" fill="none" stroke="#b0306a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 36h44v18H10z"/><path d="M10 44q5 5 11 0t11 0 11 0 11 0"/><path d="M14 36V28h36v8"/><path d="M32 28V18"/><path d="M32 11c3 3 3 5 0 7-3-2-3-4 0-7z"/></svg><strong>Cakes</strong><span>1 to 5 lb, 10 flavors</span></a><a class="cat" href="cupcake-calculator.html"><svg viewBox="0 0 64 64" fill="none" stroke="#b0306a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 34h32l-4 20H20z"/><path d="M14 34c-4-6 0-14 8-14 2-8 18-8 20 0 8 0 12 8 8 14z"/><circle cx="32" cy="12" r="3"/></svg><strong>Cupcakes</strong><span>Batter and frosting, 6 flavors</span></a><a class="cat" href="cookie-calculator.html"><svg viewBox="0 0 64 64" fill="none" stroke="#b0306a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="32" cy="32" r="22"/><circle cx="24" cy="24" r="2.5"/><circle cx="40" cy="28" r="2.5"/><circle cx="30" cy="40" r="2.5"/><circle cx="43" cy="42" r="2"/><circle cx="20" cy="36" r="2"/></svg><strong>Cookies</strong><span>5 popular types</span></a><a class="cat" href="brownie-calculator.html"><svg viewBox="0 0 64 64" fill="none" stroke="#b0306a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="10" y="14" width="44" height="36" rx="5"/><path d="M10 26h44M10 38h44M25 14v36M40 14v36"/></svg><strong>Brownies</strong><span>Pan size and time, 5 flavors</span></a><a class="cat" href="pizza-pastry-calculator.html"><svg viewBox="0 0 64 64" fill="none" stroke="#b0306a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M32 56L8 16q24-12 48 0z"/><path d="M13 24q19-8 38 0"/><circle cx="28" cy="28" r="3"/><circle cx="38" cy="32" r="3"/><circle cx="32" cy="42" r="3"/></svg><strong>Pizza &amp; Pastry</strong><span>Dough, toppings and puff pastry</span></a><a class="cat" href="recipes.html"><svg viewBox="0 0 64 64" fill="none" stroke="#b0306a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 36h44v18H10z"/><path d="M10 44q5 5 11 0t11 0 11 0 11 0"/><path d="M14 36V28h36v8"/><path d="M32 28V18"/><path d="M32 11c3 3 3 5 0 7-3-2-3-4 0-7z"/></svg><strong>Recipes</strong><span>Step-by-step bakes</span></a></div>
 </div>
 <div class="ad"><!-- ADSENSE: paste ad unit code here --></div>
 <div class="card">
-  <h2>Why the amounts are reliable</h2>
-  <p>Every recipe here is written in baker's percentages. That means each ingredient is shown as a percentage of the flour weight, so the balance of flour, fat, sugar, eggs and liquid stays the same at every size. This is how professional bakers scale recipes.</p>
-  <ul>
-    <li>Every size from 1 to 5 lb keeps the same ratios.</li>
-    <li>Grams are shown first because they are exact. Cups and spoons are close guides.</li>
-    <li>You also get pan size, oven temperature and time for the size you choose.</li>
-  </ul>
-  <p class="note">Amounts are approximate and ovens differ. Do a test bake before a big order.</p>
-</div>
-<div class="card">
-  <h2>Common questions</h2><details><summary>What does a 1 lb cake mean?</summary><p>A cake of about one pound after baking, around 15 cm (6 inch) wide, serving 6 to 8 people. Bakeries price cakes by this weight.</p></details><details><summary>Which size should I choose?</summary><p>Use the number of guests. About 6 to 8 slices per pound for cakes, 10 cupcakes per pound of batter, and 15 cookies per pound of dough.</p></details><details><summary>Is the tool free?</summary><p>Yes. It is free and needs no sign-up.</p></details></div>
+  <h2>Beginner baking tips</h2><details><summary>Should I measure by cups or grams?</summary><p>Grams are much more accurate. A cup of flour can vary by 30 g or more depending on how you scoop it. A cheap kitchen scale is the best first tool for a new baker.</p></details><details><summary>Why did my cake come out dense?</summary><p>Usually from over-mixing after adding flour, old baking powder, or cold ingredients. Mix just until combined and use room-temperature eggs and butter.</p></details><details><summary>How do I know the cake is done?</summary><p>Insert a toothpick in the center. If it comes out clean or with a few dry crumbs, the cake is ready. Do not open the oven in the first 20 minutes.</p></details><details><summary>How many people does a 1 lb cake serve?</summary><p>Roughly 6 to 8 slices. A 2 lb cake serves about 12 to 16, and a 3 lb cake serves about 20 to 24.</p></details><details><summary>Is the tool free?</summary><p>Yes. It is free and needs no sign-up.</p></details></div>
 </main>
 <footer>
   <a href="index.html">Home</a> |
@@ -51,7 +138,508 @@
   <a href="privacy.html">Privacy Policy</a>
   <p>&copy; <span id="yr"></span> Baking Quantity Calculator</p>
 </footer>
+<script>
+/* Baking Quantity Calculator engine.
+   All recipes are stored per 1 lb (454 g) unit and scaled linearly.
+   Amounts follow baker's percentages (each ingredient as % of the flour weight). */
+(function (root) {
+  "use strict";
 
+  /* ---------- Household measures ---------- */
+  // cup = grams per US cup, tsp = grams (or ml) per teaspoon, each = grams per piece
+  var T = {
+    flour: { cup: 120 }, icing: { cup: 120 }, sugar: { cup: 200 }, brown: { cup: 200 },
+    butter: { cup: 227 }, cocoa: { cup: 90 }, oats: { cup: 90 }, almondflour: { cup: 96 },
+    pb: { cup: 256 }, chips: { cup: 170 }, raisins: { cup: 150 }, nuts: { cup: 120 },
+    cheese: { cup: 100 }, creamcheese: { cup: 230 }, puree: { cup: 250 }, fruit: { cup: 150 },
+    meat: { cup: 140 }, veg: { cup: 130 }, potato: { cup: 150 }, apple: { cup: 125 },
+    sauce: { cup: 250 }, pepperoni: { cup: 100 },
+    milk: { cup: 240, unit: "ml" }, cream: { cup: 240, unit: "ml" }, oil: { cup: 240, unit: "ml" },
+    water: { cup: 240, unit: "ml" }, juice: { cup: 240, unit: "ml" },
+    essence: { tsp: 5, unit: "ml" }, vinegar: { tsp: 5, unit: "ml" },
+    bp: { tsp: 4 }, soda: { tsp: 5 }, salt: { tsp: 6 }, yeast: { tsp: 3 }, coffee: { tsp: 2 },
+    spice: { tsp: 2.5 }, zest: { tsp: 2 }, gel: { tsp: 5 },
+    egg: { each: 50 }, pcs: { unit: "pcs" }, plain: {}
+  };
+  var EIGHTHS = { 0: "", 1: "⅛", 2: "¼", 3: "⅜", 4: "½", 5: "⅝", 6: "¾", 7: "⅞" };
+
+  function frac(n, den) {
+    var q = Math.round(n * den) / den;
+    var w = Math.floor(q + 1e-9);
+    var r = Math.round((q - w) * 8);
+    var s = EIGHTHS[r] || "";
+    if (w === 0) { return s || "0"; }
+    return w + (s ? " " + s : "");
+  }
+
+  function measure(type, qty) {
+    var t = T[type] || {};
+    if (t.each) {
+      var e = Math.max(0.5, Math.round(qty / t.each * 2) / 2);
+      return "about " + frac(e, 4) + (e > 1 ? " eggs" : " egg");
+    }
+    if (t.cup) {
+      var c = qty / t.cup;
+      if (c >= 0.2) {
+        var q = Math.round(c * 8) / 8;
+        return frac(c, 8) + (q > 1 ? " cups" : " cup");
+      }
+      var tb = Math.round(qty / (t.cup / 16) * 2) / 2;
+      if (tb >= 1) { return frac(tb, 4) + " tbsp"; }
+      var ts = qty / (t.cup / 48);
+      return ts < 0.125 ? "a pinch" : frac(ts, 4) + " tsp";
+    }
+    if (t.tsp) {
+      var s = qty / t.tsp;
+      if (s >= 3) { return frac(s / 3, 4) + " tbsp"; }
+      return s < 0.125 ? "a pinch" : frac(s, 4) + " tsp";
+    }
+    if (t.unit === "pcs") { return "whole"; }
+    return "-";
+  }
+
+  function fmtQty(q, type) {
+    var u = (T[type] || {}).unit || "g";
+    if (u === "pcs") { return Math.round(q) + " pcs"; }
+    var v = q >= 10 ? Math.round(q) : Math.round(q * 10) / 10;
+    return v + " " + u;
+  }
+
+  /* ---------- Recipe builders ---------- */
+  function cakeBatter(o) {
+    var r = [["All-purpose flour (maida)", o.flour, "flour"]];
+    if (o.cocoa) { r.push(["Cocoa powder, unsweetened", o.cocoa, "cocoa"]); }
+    if (o.sugar) { r.push(["Sugar", o.sugar, "sugar"]); }
+    if (o.brown) { r.push(["Brown sugar", o.brown, "brown"]); }
+    r.push(["Butter, softened", 110, "butter"]);
+    r.push(["Eggs", 100, "egg"]);
+    (o.wet || []).forEach(function (w) { r.push(w); });
+    r.push(["Baking powder", o.bp == null ? 4 : o.bp, "bp"]);
+    if (o.soda) { r.push(["Baking soda", o.soda, "soda"]); }
+    r.push(["Salt", 1, "salt"]);
+    return r;
+  }
+  var CREAM = [["Whipping cream, cold", 150, "cream"], ["Icing sugar", 15, "icing"]];
+  var CHOC_BATTER = { flour: 120, cocoa: 30, sugar: 130, wet: [["Milk", 70, "milk"], ["Vanilla essence", 5, "essence"]] };
+
+  function flavor(id, name, main, extra, extraTitle, tip) {
+    return { id: id, name: name, groups: [{ t: "Batter", rows: main, pct: true }].concat(
+      extra ? [{ t: extraTitle || "Filling and topping (optional)", rows: extra }] : []), tip: tip || "" };
+  }
+
+  var PRODUCTS = {};
+
+  /* ----- Cakes (10 flavors) ----- */
+  function dia(lb) { var a = (lb * 550 / 0.9) / 3.5; return 2 * Math.sqrt(a / Math.PI); }
+  function pan(d) { return Math.round(d) + " cm (" + Math.round(d / 2.54) + " inch)"; }
+  function cakeTime(x) {
+    if (x <= 1) { return "30 to 35 minutes at 180°C"; }
+    if (x <= 1.5) { return "35 to 40 minutes at 175°C"; }
+    if (x <= 2) { return "40 to 50 minutes at 175°C"; }
+    if (x <= 3) { return "50 to 60 minutes at 170°C"; }
+    if (x <= 4) { return "60 to 70 minutes at 165°C"; }
+    return "65 to 80 minutes at 160°C";
+  }
+  PRODUCTS.cake = {
+    id: "cake", label: "Cake", sizeLabel: "Cake size", flavorLabel: "Cake flavor", sizes: [1, 2, 3, 4, 5],
+    flavors: [
+      flavor("vanilla", "Vanilla", cakeBatter({ flour: 150, sugar: 130, wet: [["Milk", 50, "milk"], ["Vanilla essence", 8, "essence"]] }),
+        CREAM, "Whipped cream frosting (optional)", "Vanilla needs a good essence. Use 1 tsp per lb."),
+      flavor("chocolate", "Chocolate", cakeBatter(CHOC_BATTER),
+        [["Dark chocolate, chopped", 80, "chips"], ["Fresh cream, hot", 80, "cream"]], "Chocolate ganache (optional)",
+        "Cocoa absorbs liquid, so this batter has extra milk. Do not remove it."),
+      flavor("redvelvet", "Red Velvet", cakeBatter({ flour: 150, cocoa: 5, sugar: 130, bp: 2.5, soda: 1.5,
+        wet: [["Buttermilk (or milk with a few drops of vinegar)", 60, "milk"], ["White vinegar", 2, "vinegar"], ["Red gel food colour", 3, "gel"], ["Vanilla essence", 5, "essence"]] }),
+        [["Cream cheese, cold", 100, "creamcheese"], ["Butter, softened", 50, "butter"], ["Icing sugar", 150, "icing"], ["Vanilla essence", 2, "essence"]],
+        "Cream cheese frosting (optional)", "Gel colour gives a brighter red than liquid colour."),
+      flavor("strawberry", "Strawberry", cakeBatter({ flour: 150, sugar: 130,
+        wet: [["Strawberry puree", 40, "puree"], ["Milk", 10, "milk"], ["Strawberry essence", 3, "essence"], ["Vanilla essence", 2, "essence"]] }),
+        CREAM.concat([["Fresh strawberries, sliced", 60, "fruit"]]), null, "Puree replaces most of the milk. Do not add extra liquid."),
+      flavor("butterscotch", "Butterscotch", cakeBatter({ flour: 150, sugar: 65, brown: 65,
+        wet: [["Milk", 50, "milk"], ["Butterscotch essence", 4, "essence"], ["Vanilla essence", 2, "essence"]] }),
+        CREAM.concat([["Praline or toffee crunch", 25, "nuts"]]), null, "Brown sugar gives the caramel flavor and keeps the cake moist."),
+      flavor("pineapple", "Pineapple", cakeBatter({ flour: 150, sugar: 120,
+        wet: [["Crushed pineapple, well drained", 60, "fruit"], ["Milk", 15, "milk"], ["Vanilla essence", 3, "essence"]] }),
+        CREAM.concat([["Pineapple pieces, drained", 60, "fruit"]]), null, "Drain and pat the pineapple dry. Extra juice makes the cake heavy."),
+      flavor("mango", "Mango", cakeBatter({ flour: 150, sugar: 115,
+        wet: [["Mango puree", 70, "puree"], ["Milk", 10, "milk"], ["Vanilla essence", 2, "essence"]] }),
+        CREAM.concat([["Fresh mango, diced", 70, "fruit"]]), null, "Sugar is lower because ripe mango is sweet."),
+      flavor("mocha", "Coffee Mocha", cakeBatter({ flour: 140, cocoa: 10, sugar: 130,
+        wet: [["Milk", 50, "milk"], ["Instant coffee", 3, "coffee"], ["Vanilla essence", 3, "essence"]] }),
+        [["Whipping cream, cold", 150, "cream"], ["Icing sugar", 15, "icing"], ["Instant coffee", 1.5, "coffee"]],
+        "Coffee cream (optional)", "Dissolve the coffee in the warm milk before adding."),
+      flavor("lemon", "Lemon", cakeBatter({ flour: 150, sugar: 130,
+        wet: [["Milk", 30, "milk"], ["Lemon juice", 20, "juice"], ["Lemon zest", 4, "zest"], ["Vanilla essence", 3, "essence"]] }),
+        [["Icing sugar", 60, "icing"], ["Lemon juice", 15, "juice"]], "Lemon glaze (optional)", "Rub the zest into the sugar first for a stronger flavor."),
+      flavor("blackforest", "Black Forest", cakeBatter(CHOC_BATTER),
+        [["Whipping cream, cold", 200, "cream"], ["Icing sugar", 20, "icing"], ["Cherries, pitted and drained", 60, "fruit"],
+          ["Cherry syrup", 25, "juice"], ["Dark chocolate shavings", 20, "chips"]], "Filling and topping", "Brush the cake layers with cherry syrup before adding cream.")
+    ],
+    info: function (lb) {
+      var d = dia(lb), s = [], b = [], t = [];
+      s.push("Size: " + lb + " lb cake (about " + Math.round(lb * 550) + " g of batter)");
+      s.push("Serves about " + Math.round(lb * 6) + " to " + Math.round(lb * 8) + " slices");
+      b.push("One pan: " + pan(d) + " round, at least 7 cm deep. Bake " + cakeTime(lb) + ".");
+      if (lb >= 2) { b.push("Two layers: two " + pan(dia(lb / 2)) + " round pans. Bake " + cakeTime(lb / 2) + " per layer."); }
+      if (lb >= 4) { b.push("Large cakes bake more evenly as two layers."); }
+      b.push("Fill the pan about half full. Check from 5 minutes before the time with a toothpick.");
+      t.push("Weigh ingredients in grams. Cups are only a guide.");
+      t.push("Use room-temperature eggs, butter and milk.");
+      t.push("Do not open the oven in the first 20 minutes.");
+      return { summary: s, bake: b, tips: t };
+    }
+  };
+
+  /* ----- Cupcakes (6 flavors) ----- */
+  function bc(extra) {
+    var r = [["Butter, softened", 100, "butter"], ["Icing sugar", 200, "icing"], ["Milk", 15, "milk"], ["Vanilla essence", 3, "essence"]];
+    return extra ? extra : r;
+  }
+  PRODUCTS.cupcake = {
+    id: "cupcake", label: "Cupcakes", sizeLabel: "Batter size", flavorLabel: "Cupcake flavor", sizes: [1, 2, 3, 4, 5],
+    flavors: [
+      flavor("vanilla", "Vanilla", cakeBatter({ flour: 150, sugar: 130, wet: [["Milk", 50, "milk"], ["Vanilla essence", 8, "essence"]] }), bc(), "Vanilla buttercream (optional)", ""),
+      flavor("chocolate", "Chocolate", cakeBatter(CHOC_BATTER),
+        [["Butter, softened", 100, "butter"], ["Icing sugar", 170, "icing"], ["Cocoa powder", 30, "cocoa"], ["Milk", 25, "milk"], ["Vanilla essence", 3, "essence"]],
+        "Chocolate buttercream (optional)", "Cocoa needs extra milk, already included."),
+      flavor("redvelvet", "Red Velvet", cakeBatter({ flour: 150, cocoa: 5, sugar: 130, bp: 2.5, soda: 1.5,
+        wet: [["Buttermilk (or milk with a few drops of vinegar)", 60, "milk"], ["White vinegar", 2, "vinegar"], ["Red gel food colour", 3, "gel"], ["Vanilla essence", 5, "essence"]] }),
+        [["Cream cheese, cold", 100, "creamcheese"], ["Butter, softened", 50, "butter"], ["Icing sugar", 150, "icing"], ["Vanilla essence", 2, "essence"]],
+        "Cream cheese frosting (optional)", ""),
+      flavor("strawberry", "Strawberry", cakeBatter({ flour: 150, sugar: 130,
+        wet: [["Strawberry puree", 40, "puree"], ["Milk", 10, "milk"], ["Strawberry essence", 3, "essence"], ["Vanilla essence", 2, "essence"]] }),
+        [["Butter, softened", 100, "butter"], ["Icing sugar", 200, "icing"], ["Strawberry essence", 3, "essence"], ["Milk", 15, "milk"]],
+        "Strawberry buttercream (optional)", ""),
+      flavor("lemon", "Lemon", cakeBatter({ flour: 150, sugar: 130,
+        wet: [["Milk", 30, "milk"], ["Lemon juice", 20, "juice"], ["Lemon zest", 4, "zest"], ["Vanilla essence", 3, "essence"]] }),
+        [["Butter, softened", 100, "butter"], ["Icing sugar", 200, "icing"], ["Lemon juice", 10, "juice"], ["Lemon zest", 2, "zest"]],
+        "Lemon buttercream (optional)", ""),
+      flavor("butterscotch", "Butterscotch", cakeBatter({ flour: 150, sugar: 65, brown: 65,
+        wet: [["Milk", 50, "milk"], ["Butterscotch essence", 4, "essence"], ["Vanilla essence", 2, "essence"]] }),
+        [["Butter, softened", 100, "butter"], ["Icing sugar", 190, "icing"], ["Butterscotch essence", 3, "essence"], ["Milk", 15, "milk"]],
+        "Butterscotch buttercream (optional)", "")
+    ],
+    info: function (lb) {
+      var n = Math.round(lb * 10);
+      return {
+        summary: ["Batter: " + lb + " lb (about " + Math.round(lb * 550) + " g)", "Makes about " + n + " standard cupcakes (55 g batter each)",
+          "Or about " + Math.round(lb * 27) + " mini cupcakes (20 g each)"],
+        bake: ["Standard cupcakes: 180°C for 18 to 22 minutes.", "Mini cupcakes: 180°C for 10 to 13 minutes.",
+          "You need about " + Math.ceil(n / 12) + " standard 12-cup tray(s). Fill liners two-thirds full.",
+          "Frosting amounts cover about " + n + " cupcakes."],
+        tips: ["Use an ice cream scoop so every cupcake gets the same amount.", "Cool cupcakes completely before frosting.", "Do not overmix after adding flour."]
+      };
+    }
+  };
+
+  /* ----- Cookies (5 flavors) ----- */
+  function cookie(id, name, rows, bake, tip) {
+    return { id: id, name: name, groups: [{ t: "Dough", rows: rows, pct: true }], bake: bake, tip: tip };
+  }
+  PRODUCTS.cookie = {
+    id: "cookie", label: "Cookies", sizeLabel: "Dough size", flavorLabel: "Cookie flavor", sizes: [1, 2, 3, 4, 5],
+    flavors: [
+      cookie("chocchip", "Chocolate Chip", [["All-purpose flour (maida)", 115, "flour"], ["Butter, softened", 90, "butter"], ["Sugar", 45, "sugar"], ["Brown sugar", 55, "brown"],
+        ["Egg", 38, "egg"], ["Vanilla essence", 3, "essence"], ["Baking soda", 1.5, "soda"], ["Salt", 1.5, "salt"], ["Chocolate chips", 105, "chips"]],
+        "175°C for 10 to 12 minutes", "Chill the dough for 30 minutes for thicker cookies."),
+      cookie("oatmeal", "Oatmeal Raisin", [["All-purpose flour (maida)", 80, "flour"], ["Rolled oats", 80, "oats"], ["Butter, softened", 90, "butter"], ["Brown sugar", 70, "brown"],
+        ["Sugar", 25, "sugar"], ["Egg", 38, "egg"], ["Raisins", 60, "raisins"], ["Vanilla essence", 3, "essence"], ["Baking soda", 1.5, "soda"], ["Salt", 1.5, "salt"], ["Cinnamon", 1.5, "spice"]],
+        "175°C for 11 to 13 minutes", "Use rolled oats, not instant oats, for a chewy texture."),
+      cookie("almond", "Almond", [["All-purpose flour (maida)", 145, "flour"], ["Ground almonds (almond flour)", 48, "almondflour"], ["Butter, softened", 108, "butter"], ["Sugar", 95, "sugar"],
+        ["Egg", 48, "egg"], ["Vanilla essence", 3, "essence"], ["Almond essence", 1, "essence"], ["Baking powder", 2, "bp"], ["Salt", 1, "salt"], ["Whole almonds for the tops", 15, "pcs"]],
+        "170°C for 12 to 14 minutes", "Press one whole almond on each cookie before baking."),
+      cookie("peanut", "Peanut Butter", [["All-purpose flour (maida)", 90, "flour"], ["Peanut butter", 140, "pb"], ["Butter, softened", 62, "butter"], ["Sugar", 55, "sugar"],
+        ["Brown sugar", 62, "brown"], ["Egg", 33, "egg"], ["Vanilla essence", 3, "essence"], ["Baking soda", 1.5, "soda"], ["Salt", 1.5, "salt"]],
+        "175°C for 10 to 12 minutes", "Press a fork crisscross on each ball. Do not overbake."),
+      cookie("sugar", "Sugar Cookies", [["All-purpose flour (maida)", 195, "flour"], ["Butter, softened", 105, "butter"], ["Sugar", 95, "sugar"], ["Egg", 45, "egg"],
+        ["Vanilla essence", 4, "essence"], ["Baking powder", 1.5, "bp"], ["Salt", 1.5, "salt"]],
+        "175°C for 9 to 11 minutes", "Chill the dough before rolling and cutting shapes.")
+    ],
+    info: function (lb, f) {
+      var n = Math.round(lb * 15);
+      return {
+        summary: ["Dough: " + lb + " lb (about " + Math.round(lb * 454) + " g)", "Makes about " + n + " cookies (30 g dough each)"],
+        bake: ["Bake at " + f.bake + ".", "Place balls 5 cm apart. About 12 cookies fit on one tray, so you need " + Math.ceil(n / 12) + " tray load(s).",
+          "Cookies firm up as they cool. Remove them when the edges are golden."],
+        tips: ["Weigh the flour. Too much flour makes dry cookies.", "Use butter that is soft but still cool.", f.tip]
+      };
+    }
+  };
+
+  /* ----- Brownies (5 flavors) ----- */
+  function brownie(id, name, more, tip) {
+    var r = [["Butter", 86, "butter"], ["Dark chocolate, chopped", 112, "chips"], ["Sugar", 112, "sugar"], ["Eggs", 75, "egg"],
+      ["All-purpose flour (maida)", 49, "flour"], ["Cocoa powder, unsweetened", 15, "cocoa"], ["Vanilla essence", 4, "essence"], ["Salt", 1, "salt"]];
+    return { id: id, name: name, groups: [{ t: "Batter", rows: r.concat(more), pct: true }], tip: tip };
+  }
+  var BTIME = { 1: "20 to 24 minutes", 2: "25 to 30 minutes", 3: "30 to 35 minutes", 4: "35 to 40 minutes", 5: "38 to 45 minutes" };
+  PRODUCTS.brownie = {
+    id: "brownie", label: "Brownies", sizeLabel: "Batter size", flavorLabel: "Brownie flavor", sizes: [1, 2, 3, 4, 5],
+    flavors: [
+      brownie("classic", "Classic Fudgy", [], "Beat the eggs and sugar well for a shiny, crackly top."),
+      brownie("walnut", "Walnut", [["Walnuts, chopped", 60, "nuts"]], "Toast the walnuts for 5 minutes for more flavor."),
+      brownie("doublechoc", "Double Chocolate Chip", [["Chocolate chips", 60, "chips"]], "Fold in the chips last, just before baking."),
+      brownie("coffee", "Coffee", [["Instant coffee", 2, "coffee"]], "Dissolve the coffee in the warm melted butter."),
+      brownie("peanut", "Peanut Butter Swirl", [["Peanut butter", 60, "pb"]], "Warm the peanut butter, dot it on top and swirl with a knife.")
+    ],
+    info: function (lb) {
+      var area = lb * 272, side = Math.sqrt(area);
+      return {
+        summary: ["Batter: " + lb + " lb (about " + Math.round(lb * 454) + " g)", "Makes about " + Math.round(lb * 12) + " squares"],
+        bake: ["Pan area needed: about " + Math.round(area) + " cm², which is a square about " + Math.round(side) + " cm (" + Math.round(side / 2.54) + " inch) wide.",
+          lb >= 4 ? "Use a baking tray or two pans so the batter stays about 3 cm deep." : "Line the pan with baking paper and leave extra paper at the sides.",
+          "Bake at 175°C for " + BTIME[lb] + ".", "A toothpick should show moist crumbs, not wet batter."],
+        tips: ["Cool completely before cutting, at least 1 hour.", "Do not overbake. Brownies keep cooking in the hot pan."]
+      };
+    }
+  };
+
+  /* ----- Pizza ----- */
+  function pz(id, name, toppings, tip) {
+    return { id: id, name: name, groups: [
+      { t: "Pizza dough", rows: [["Bread flour or all-purpose flour", 269, "flour"], ["Water, lukewarm", 167, "water"], ["Instant yeast", 2.7, "yeast"], ["Salt", 5.4, "salt"],
+        ["Olive oil", 8, "oil"], ["Sugar", 2.7, "sugar"]], pct: true },
+      { t: "Toppings", rows: toppings }], tip: tip };
+  }
+  var PIZZA = {
+    id: "pizza", label: "Pizza", sizeLabel: "Dough weight", flavorLabel: "Pizza type", sizes: [1, 2, 3, 4, 5],
+    flavors: [
+      pz("margherita", "Margherita", [["Pizza sauce (tomato)", 120, "sauce"], ["Mozzarella, grated", 190, "cheese"], ["Fresh basil leaves", 5, "plain"]], "Add the basil after baking."),
+      pz("tikka", "Chicken Tikka", [["Pizza sauce (tomato)", 100, "sauce"], ["Mozzarella, grated", 160, "cheese"], ["Cooked chicken tikka pieces", 150, "meat"],
+        ["Onion, sliced", 40, "veg"], ["Capsicum, sliced", 40, "veg"]], "Pat the chicken dry so the pizza does not turn watery."),
+      pz("pepperoni", "Pepperoni", [["Pizza sauce (tomato)", 120, "sauce"], ["Mozzarella, grated", 170, "cheese"], ["Pepperoni slices (halal)", 70, "pepperoni"]], "Put cheese under the pepperoni so it stays crisp."),
+      pz("bbq", "BBQ Chicken", [["BBQ sauce", 100, "sauce"], ["Mozzarella, grated", 160, "cheese"], ["Cooked chicken pieces", 150, "meat"], ["Onion, sliced", 40, "veg"]],
+        "Thin slices of onion cook faster and taste sweeter."),
+      pz("veggie", "Vegetable", [["Pizza sauce (tomato)", 120, "sauce"], ["Mozzarella, grated", 160, "cheese"], ["Mushrooms, sliced", 50, "veg"], ["Capsicum, sliced", 50, "veg"],
+        ["Onion, sliced", 40, "veg"], ["Black olives, sliced", 30, "veg"]], "Pre-cook wet vegetables like mushrooms briefly to remove water.")
+    ],
+    info: function (lb) {
+      var g = lb * 454, n = Math.max(1, Math.round(g / 270));
+      return {
+        summary: ["Dough: " + lb + " lb (about " + Math.round(g) + " g)", "Makes about " + n + " pizzas of 30 cm (12 inch)", "Divide into " + n + " dough balls of about " + Math.round(g / n) + " g"],
+        bake: ["Knead 8 to 10 minutes. Let the dough rise 1 to 1.5 hours until doubled.", "Preheat the oven and tray to the highest setting, about 250°C, for 20 minutes.",
+          "Bake 8 to 12 minutes until the edges are golden and the cheese bubbles.", "Dough is 62% water (hydration), a good balance for home ovens."],
+        tips: ["Cold, slow rising in the fridge overnight gives better flavor.", lb >= 3 ? "Mix large amounts in batches so the dough develops properly." : "Do not add extra flour while kneading. Slightly sticky dough gives a softer crust."]
+      };
+    }
+  };
+
+  /* ----- Puff pastry ----- */
+  function pastry(id, name, fill, bake, tip) {
+    return { id: id, name: name, groups: [
+      { t: "Rough puff pastry dough", rows: [["All-purpose flour (maida)", 205, "flour"], ["Butter, cold, in cubes", 143, "butter"], ["Cold water", 102, "water"], ["Salt", 3, "salt"]], pct: true },
+      { t: "Filling", rows: fill },
+      { t: "Egg wash", rows: [["Egg", 50, "egg"], ["Milk", 15, "milk"]] }], bake: bake, tip: tip };
+  }
+  var PASTRY = {
+    id: "pastry", label: "Puff pastry", sizeLabel: "Dough weight", flavorLabel: "Pastry type", sizes: [1, 2, 3, 4, 5],
+    flavors: [
+      pastry("chicken", "Chicken Patties", [["Cooked chicken, shredded", 220, "meat"], ["Onion, finely chopped", 40, "veg"], ["Butter", 15, "butter"], ["Flour (for white sauce)", 15, "flour"],
+        ["Milk", 120, "milk"], ["Salt", 3, "salt"], ["Black pepper", 1.5, "spice"]], "200°C for 22 to 28 minutes", "Cool the filling completely before filling the pastry."),
+      pastry("veg", "Vegetable Patties", [["Potato, boiled and mashed", 150, "potato"], ["Carrot, finely diced", 50, "veg"], ["Green peas", 50, "veg"], ["Onion, chopped", 40, "veg"],
+        ["Oil", 15, "oil"], ["Spice mix (salt, pepper, cumin)", 5, "spice"]], "200°C for 22 to 28 minutes", "Keep the filling dry. Wet filling makes soggy pastry."),
+      pastry("cream", "Cream Rolls", [["Whipping cream, cold", 150, "cream"], ["Icing sugar", 20, "icing"], ["Vanilla essence", 2, "essence"], ["Sugar, for dusting", 10, "sugar"]],
+        "200°C for 18 to 22 minutes", "Wrap pastry strips around cream horn molds. Fill with cream only after baking and cooling."),
+      pastry("apple", "Apple Turnovers", [["Apples, peeled and diced", 250, "apple"], ["Sugar", 40, "sugar"], ["Cinnamon", 2, "spice"], ["Lemon juice", 10, "juice"],
+        ["Cornflour", 6, "flour"], ["Sugar, for topping", 10, "sugar"]], "200°C for 22 to 26 minutes", "Cook the apples for 5 minutes first so the filling is not watery."),
+      pastry("chocolate", "Chocolate Pastry", [["Dark chocolate, chopped", 150, "chips"], ["Sugar, for topping", 8, "sugar"]], "200°C for 18 to 22 minutes",
+        "Roll the chocolate inside the dough and seal the edges well."),
+      pastry("cheese", "Cheese Twists", [["Cheddar or mozzarella, grated", 120, "cheese"], ["Red chili powder or paprika", 1, "spice"]], "200°C for 15 to 18 minutes",
+        "Twist the strips before baking for a crisp, layered look.")
+    ],
+    info: function (lb, f) {
+      var n = Math.round(lb * 9);
+      return {
+        summary: ["Dough: " + lb + " lb (about " + Math.round(lb * 454) + " g)", "Makes about " + n + " pieces (50 g dough each)"],
+        bake: ["Mix flour and salt. Rub in the cold butter cubes, leaving some pea-sized lumps.", "Add the cold water to make a rough dough. Roll out and fold in thirds. Repeat 4 times, resting 20 minutes in the fridge between folds.",
+          "Brush with egg wash. Bake at " + f.bake + " until puffed and deep golden."],
+        tips: ["Keep the butter and water cold, or the layers will not form.", f.tip, "Preheat the oven fully. A hot oven makes the layers puff."]
+      };
+    }
+  };
+  PRODUCTS.pizza = PIZZA;
+  PRODUCTS.pastry = PASTRY;
+
+  /* ---------- Headline numbers shown as tiles ---------- */
+  var STATS = {
+    cake: function (lb) {
+      return [{ k: "Batter", v: Math.round(lb * 550) + " g" },
+        { k: "Serves", v: Math.round(lb * 6) + " to " + Math.round(lb * 8) + " slices", s: Math.round(lb * 6) + "-" + Math.round(lb * 8) },
+        { k: "Bake", v: cakeTime(lb) }, { k: "Pan", v: pan(dia(lb)) + " round" }];
+    },
+    cupcake: function (lb) {
+      var n = Math.round(lb * 10);
+      return [{ k: "Batter", v: Math.round(lb * 550) + " g" }, { k: "Makes", v: n + " cupcakes", s: String(n) },
+        { k: "Or mini", v: Math.round(lb * 27) + " mini cupcakes" }, { k: "Bake", v: "18 to 22 min at 180°C" }];
+    },
+    cookie: function (lb, f) {
+      var n = Math.round(lb * 15);
+      return [{ k: "Dough", v: Math.round(lb * 454) + " g" }, { k: "Makes", v: n + " cookies", s: String(n) },
+        { k: "Bake", v: f.bake }, { k: "Trays", v: Math.ceil(n / 12) + " tray load(s)" }];
+    },
+    brownie: function (lb) {
+      var side = Math.sqrt(lb * 272);
+      return [{ k: "Batter", v: Math.round(lb * 454) + " g" }, { k: "Makes", v: Math.round(lb * 12) + " squares", s: String(Math.round(lb * 12)) },
+        { k: "Pan", v: Math.round(side) + " cm (" + Math.round(side / 2.54) + " inch) square" }, { k: "Bake", v: BTIME[lb] + " at 175°C" }];
+    },
+    pizza: function (lb) {
+      var g = lb * 454, n = Math.max(1, Math.round(g / 270));
+      return [{ k: "Dough", v: Math.round(g) + " g" }, { k: "Makes", v: n + " pizzas (12 inch)", s: String(n) },
+        { k: "Dough balls", v: Math.round(g / n) + " g each" }, { k: "Bake", v: "8 to 12 min at 250°C" }];
+    },
+    pastry: function (lb, f) {
+      var n = Math.round(lb * 9);
+      return [{ k: "Dough", v: Math.round(lb * 454) + " g" }, { k: "Makes", v: n + " pieces", s: String(n) },
+        { k: "Each piece", v: "50 g dough" }, { k: "Bake", v: f.bake }];
+    }
+  };
+  var HINT = { cake: "slices", cupcake: "cupcakes", cookie: "cookies", brownie: "squares", pizza: "pizzas", pastry: "pieces" };
+  var EMOJI = { cake: "🎂", cupcake: "🧁", cookie: "🍪", brownie: "🍫", pizza: "🍕", pastry: "🥐" };
+  var CATNAME = { cake: "Cakes", cupcake: "Cupcakes", cookie: "Cookies", brownie: "Brownies", pizza: "Pizza", pastry: "Puff pastry" };
+  var COLORS = {
+    vanilla: "#f3e2b3", chocolate: "#6b3f2a", redvelvet: "#b3202f", strawberry: "#f48fb1", butterscotch: "#d99a3b", pineapple: "#f6d44a",
+    mango: "#f7a823", mocha: "#9a6b4b", lemon: "#f3e04a", blackforest: "#3b1f2b", chocchip: "#8a5a3c", oatmeal: "#c8a26b", almond: "#e0c28f",
+    peanut: "#c68b3e", sugar: "#f5d6e0", classic: "#5a3220", walnut: "#7a5230", doublechoc: "#4a2a1c", coffee: "#7b5a43", margherita: "#e53935",
+    tikka: "#f57c00", pepperoni: "#c62828", bbq: "#8d4a2b", veggie: "#4caf50", chicken: "#e0a96d", veg: "#7cb342", cream: "#fff3d6",
+    apple: "#cdb44a", cheese: "#f4b942"
+  };
+
+  var PAGES = { home: ["cake", "cupcake", "cookie", "brownie", "pizza", "pastry"], cake: ["cake"], cupcake: ["cupcake"], cookie: ["cookie"], brownie: ["brownie"], pizza: ["pizza", "pastry"] };
+
+  /* ---------- Calculation (pure, testable) ---------- */
+  function findFlavor(p, id) {
+    for (var i = 0; i < p.flavors.length; i++) { if (p.flavors[i].id === id) { return p.flavors[i]; } }
+    return p.flavors[0];
+  }
+  function calc(productId, lb, flavorId) {
+    var p = PRODUCTS[productId], f = findFlavor(p, flavorId), flourRef = 0;
+    var g0 = f.groups[0].rows;
+    for (var i = 0; i < g0.length; i++) { if (g0[i][2] === "flour") { flourRef += g0[i][1] * lb; } }
+    var groups = f.groups.map(function (g) {
+      return {
+        title: g.t, pct: !!g.pct && flourRef > 0,
+        rows: g.rows.map(function (r) {
+          var q = r[1] * lb;
+          var pc = null;
+          if (g.pct && flourRef > 0 && r[2] !== "pcs") { var v = q / flourRef * 100; pc = v >= 10 ? Math.round(v) : Math.round(v * 10) / 10; }
+          return { name: r[0], qty: q, type: r[2], qtyText: fmtQty(q, r[2]), measure: measure(r[2], q), pct: pc };
+        })
+      };
+    });
+    return { flavor: f, groups: groups, info: p.info(lb, f), stats: STATS[productId](lb, f), label: p.label };
+  }
+
+  /* ---------- Browser UI ---------- */
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+
+  function init(page, start) {
+    var app = document.getElementById("app");
+    if (!app) { return; }
+    var ids = PAGES[page], multi = ids.length > 1;
+    var state = { cat: (start && PRODUCTS[start]) ? start : ids[0], flv: null, lb: 1 };
+    var n1 = multi ? 2 : 1;
+    app.innerHTML =
+      '<div class="calc card">' +
+      (multi ? '<div class="step"><h2><span class="n">1</span>What are you baking?</h2><div class="tiles' + (ids.length === 2 ? " two" : "") + '" id="cats"></div></div>' : "") +
+      '<div class="step"><h2><span class="n">' + n1 + '</span>Pick a flavor</h2><div class="chips" id="flvs"></div></div>' +
+      '<div class="step"><h2><span class="n">' + (n1 + 1) + '</span>How big?</h2><div class="pills" id="sizes"></div><p class="hint" id="hint"></p></div>' +
+      '<button id="go" type="button">Show ingredients ↓</button></div><div id="out"></div>';
+
+    var catsEl = document.getElementById("cats"), flvEl = document.getElementById("flvs"), sizeEl = document.getElementById("sizes");
+    function P() { return PRODUCTS[state.cat]; }
+    function F() { return findFlavor(P(), state.flv); }
+
+    function drawCats() {
+      if (!catsEl) { return; }
+      catsEl.innerHTML = ids.map(function (id) {
+        return '<button type="button" class="tile' + (id === state.cat ? " on" : "") + '" data-cat="' + id + '" aria-pressed="' + (id === state.cat) + '">' +
+          '<span class="em">' + EMOJI[id] + "</span><span>" + CATNAME[id] + "</span><small>" + PRODUCTS[id].flavors.length + " flavors</small></button>";
+      }).join("");
+    }
+    function drawFlavors() {
+      var p = P();
+      if (!state.flv || !p.flavors.some(function (f) { return f.id === state.flv; })) { state.flv = p.flavors[0].id; }
+      flvEl.innerHTML = p.flavors.map(function (f) {
+        return '<button type="button" class="chip' + (f.id === state.flv ? " on" : "") + '" data-flv="' + f.id + '" aria-pressed="' + (f.id === state.flv) + '">' +
+          '<i style="background:' + (COLORS[f.id] || "#ddd") + '"></i>' + esc(f.name) + "</button>";
+      }).join("");
+    }
+    function drawSizes() {
+      var p = P(), f = F();
+      sizeEl.innerHTML = p.sizes.map(function (lb) {
+        var st = STATS[p.id](lb, f)[1];
+        return '<button type="button" class="pill' + (lb === state.lb ? " on" : "") + '" data-lb="' + lb + '" aria-pressed="' + (lb === state.lb) + '"><b>' + lb + " lb</b><small>" + st.s + "</small></button>";
+      }).join("");
+      document.getElementById("hint").textContent = "The small number under each size is how many " + HINT[p.id] + " you get.";
+    }
+
+    function textFor(r, title) {
+      var t = title + " (" + state.lb + " lb)\n";
+      r.groups.forEach(function (g) {
+        t += "\n" + g.title + "\n";
+        g.rows.forEach(function (x) { t += "- " + x.name + ": " + x.qtyText + (x.measure && x.measure !== "-" && x.measure !== "whole" ? " (" + x.measure + ")" : "") + "\n"; });
+      });
+      return t + "\nMade with the Baking Quantity Calculator";
+    }
+
+    function render(scroll) {
+      var p = P(), r = calc(p.id, state.lb, state.flv);
+      var title = p.id === "pastry" ? r.flavor.name + " (puff pastry)" : r.flavor.name + " " + p.label;
+      var o = '<div class="card result" id="result"><div class="rhead"><span class="dot" style="background:' + (COLORS[r.flavor.id] || "#ddd") + '"></span><div><h2>' +
+        esc(title) + "</h2><p>" + state.lb + " lb &middot; " + esc(r.stats[1].v) + '</p></div></div><div class="stats">';
+      r.stats.forEach(function (s) { o += '<div class="st"><small>' + esc(s.k) + "</small><b>" + esc(s.v) + "</b></div>"; });
+      o += "</div>";
+      r.groups.forEach(function (g) {
+        o += '<span class="gt">' + esc(g.title) + "</span>";
+        g.rows.forEach(function (x) {
+          var m = (x.measure && x.measure !== "-" && x.measure !== "whole") ? "<small>" + esc(x.measure) + "</small>" : "";
+          o += '<div class="row"><div class="nm">' + esc(x.name) + (x.pct !== null ? '<span class="pct">' + x.pct + "% baker's</span>" : "") +
+            '</div><div class="am"><b>' + esc(x.qtyText) + "</b>" + m + "</div></div>";
+        });
+      });
+      var text = textFor(r, title);
+      o += '<div class="actions"><button type="button" class="ghost" id="copy">Copy list</button>' +
+        '<a class="ghost" target="_blank" rel="noopener" href="https://wa.me/?text=' + encodeURIComponent(text) + '">Share on WhatsApp</a></div>';
+      o += '<p class="note">Baker\'s % compares each ingredient with the flour weight (flour = 100%). Cup guide: flour 120 g, sugar 200 g, butter 227 g. Weigh in grams for the best result.</p></div>';
+      o += '<div class="card"><h2>Baking guide</h2><ul>';
+      r.info.bake.forEach(function (x) { o += "<li>" + esc(x) + "</li>"; });
+      o += "</ul><h3>Tips</h3><ul>";
+      var tips = r.info.tips.slice();
+      if (r.flavor.tip && tips.indexOf(r.flavor.tip) < 0) { tips.unshift(r.flavor.tip); }
+      tips.forEach(function (x) { if (x) { o += "<li>" + esc(x) + "</li>"; } });
+      o += "</ul></div>";
+      document.getElementById("out").innerHTML = o;
+      var cb = document.getElementById("copy");
+      cb.addEventListener("click", function () {
+        function done() { cb.textContent = "Copied!"; setTimeout(function () { cb.textContent = "Copy list"; }, 1600); }
+        function fallback() {
+          var ta = document.createElement("textarea"); ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+          document.body.appendChild(ta); ta.select();
+          try { document.execCommand("copy"); done(); } catch (e) { cb.textContent = "Copy failed"; }
+          document.body.removeChild(ta);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(text).then(done, fallback); } else { fallback(); }
+      });
+      if (scroll) { try { document.getElementById("result").scrollIntoView({ behavior: "smooth" }); } catch (e) {} }
+    }
+
+    app.addEventListener("click", function (e) {
+      var t = e.target.closest ? e.target.closest("button") : null;
+      if (!t) { return; }
+      if (t.hasAttribute("data-cat")) { state.cat = t.getAttribute("data-cat"); state.flv = null; drawCats(); drawFlavors(); drawSizes(); render(false); }
+      else if (t.hasAttribute("data-flv")) { state.flv = t.getAttribute("data-flv"); drawFlavors(); drawSizes(); render(false); }
+      else if (t.hasAttribute("data-lb")) { state.lb = parseFloat(t.getAttribute("data-lb")); drawSizes(); render(false); }
+      else if (t.id === "go") { render(true); }
+    });
+    drawCats(); drawFlavors(); drawSizes(); render(false);
+  }
+
+  var api = { calc: calc, init: init, PRODUCTS: PRODUCTS, PAGES: PAGES, measure: measure };
+  if (typeof module !== "undefined" && module.exports) { module.exports = api; } else { root.BakeCalc = api; }
+})(typeof window !== "undefined" ? window : this);
+
+BakeCalc.init("home");
+</script>
 <script>document.getElementById("yr").textContent = new Date().getFullYear();</script>
 </body>
 </html>
